@@ -1,0 +1,151 @@
+# Constellation Configuration Example
+# Copy this file to constellation.yml and modify as needed
+
+# Node configuration
+node:
+  # Unique node identifier (auto-generated if not specified)
+  id: ""
+  # Node name for display purposes
+  name: "constellation-node-1"
+  # Port for the constellation service
+  port: 5443
+  # Interface to bind to (0.0.0.0 for all interfaces)
+  bind: "0.0.0.0"
+
+# Tailscale configuration for node discovery
+tailscale:
+  # Enable Tailscale integration for node discovery
+  enabled: true
+  # Tailscale interface name (usually tailscale0)
+  interface: "tailscale0"
+  # Timeout for tailscale status calls (seconds)
+  timeout: 10
+
+# Docker configuration
+docker:
+  # Docker socket path
+  socket: "/var/run/docker.sock"
+  # Default network for containers
+  default_network: "constellation"
+  # Container restart policy
+  restart_policy: "unless-stopped"
+  # Default resource limits
+  default_limits:
+    memory: "512m"
+    cpus: "0.5"
+
+# Distributed state management
+state:
+  # State synchronization interval (seconds)
+  sync_interval: 30
+  # State persistence backend
+  backend: "sqlite"
+  # Database configuration
+  database:
+    url: "sqlite:///constellation.db"
+    # For PostgreSQL/MySQL:
+    # url: "postgresql://user:pass@localhost/constellation"
+    pool_size: 10
+    max_overflow: 20
+
+# Health monitoring
+monitoring:
+  # Health check interval (seconds)
+  check_interval: 30
+  # Health check timeout (seconds)
+  check_timeout: 10
+  # Number of failed checks before marking unhealthy
+  failure_threshold: 3
+  # Prometheus metrics configuration
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+
+# Failover configuration
+failover:
+  # Enable automatic failover
+  enabled: true
+  # Failover timeout (seconds)
+  timeout: 60
+  # Maximum number of failover attempts
+  max_attempts: 3
+  # Failover strategies
+  strategies:
+    - "least_loaded"  # Prefer nodes with lowest resource usage
+    - "round_robin"   # Round-robin distribution
+    - "same_zone"     # Prefer nodes in same availability zone
+
+# Network configuration
+network:
+  # VPN container handling
+  vpn:
+    # Detect VPN containers automatically
+    auto_detect: true
+    # VPN container patterns to match
+    patterns:
+      - "*warp*"
+      - "*vpn*"
+      - "*proxy*"
+    # VPN failover timeout (seconds)
+    failover_timeout: 30
+
+# API configuration
+api:
+  # Enable REST API
+  enabled: true
+  # API documentation
+  docs:
+    enabled: true
+    path: "/docs"
+  # CORS configuration
+  cors:
+    enabled: true
+    origins:
+      - "http://localhost:3000"
+      - "http://localhost:8080"
+  # Authentication (future feature)
+  auth:
+    enabled: false
+    # type: "jwt"
+    # secret_key: "your-secret-key"
+
+# WebSocket configuration
+websocket:
+  # Enable WebSocket support
+  enabled: true
+  # WebSocket path
+  path: "/ws"
+  # Connection timeout (seconds)
+  timeout: 300
+
+# Logging configuration
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  # Output format (text, json)
+  format: "text"
+  # Log file path (empty for stdout only)
+  file: ""
+  # Log rotation
+  rotation:
+    max_size: "10MB"
+    backup_count: 5
+
+# Security configuration
+security:
+  # Enable TLS
+  tls:
+    enabled: false
+    cert_file: ""
+    key_file: ""
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+  # Trusted networks (CIDR notation)
+  trusted_networks:
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+    - "192.168.0.0/16"
+    - "100.64.0.0/10"  # Tailscale CGNAT range 
