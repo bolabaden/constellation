@@ -2,6 +2,10 @@
 
 Constellation is a distributed container orchestration system designed to provide high availability and automatic failover for containerized applications across multiple nodes.
 
+I created this to get an idea about how industry standard orchestrators make decisions, and to test the real-world consequences of various ideas and strategies that I brainstormed but have not seen in modern practice.
+
+This project is loosely based on nomad/kubernetes/swarm. None of this should be used in production at this time.
+
 ## Features
 
 - **Distributed Architecture**: Peer-to-peer node discovery using Tailscale
